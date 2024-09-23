@@ -1,8 +1,8 @@
-[
-    {
-      "origin": ["https://tdo5h.github.io"],
-      "method": ["GET", "POST", "PUT", "DELETE"],
-      "maxAgeSeconds": 3600,
-      "responseHeader": ["Content-Type"]
-    }
-  ]
+    [
+      {
+        "origin": ["https://tdo5h.github.io"],
+        "method": ["GET", "POST", "PUT", "DELETE"],
+        "maxAgeSeconds": 3600,
+        "responseHeader": ["Content-Type"]
+      }
+    ]
