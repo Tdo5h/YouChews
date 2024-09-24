@@ -6,13 +6,22 @@ const firebaseConfig = {
     projectId: "youchews-e12e5",
     storageBucket: "youchews-e12e5.appspot.com",
     messagingSenderId: "629252636983",
-    appId: "1:629252636983:web:106d8df8a274e464341ab2",
-    measurementId: "G-RCR2KKPX4R"
-  };
+    appId: "YOUR_APP_ID"
+};
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage();
+
+// Ensure Firebase Authentication is available
+if (firebase.auth) {
+    // Authenticate the user (example using anonymous authentication)
+    firebase.auth().signInAnonymously().catch(function(error) {
+        console.error('Authentication failed:', error);
+    });
+} else {
+    console.error('Firebase Authentication is not available.');
+}
 
 // Drag and drop functionality
 let dropArea = document.getElementById('drop-area');
