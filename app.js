@@ -7,30 +7,53 @@ const firebaseConfig = {
     storageBucket: "youchews.appspot.com",
     messagingSenderId: "843273309086",
     appId: "1:843273309086:web:1147f44dfb8f4d96a9248f"
-  };
+};
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+try {
+    firebase.initializeApp(firebaseConfig);
+    console.log("Firebase initialized successfully");
+} catch (error) {
+    console.error("Error initializing Firebase:", error);
+}
 
 // Initialize Firebase Authentication
-const auth = firebase.auth();
+let auth;
+try {
+    auth = firebase.auth();
+    console.log("Firebase Auth initialized successfully");
+} catch (error) {
+    console.error("Error initializing Firebase Auth:", error);
+}
 
 // Initialize Firebase Storage
-const storage = firebase.storage();
+let storage;
+try {
+    storage = firebase.storage();
+    console.log("Firebase Storage initialized successfully");
+} catch (error) {
+    console.error("Error initializing Firebase Storage:", error);
+}
 
 // Function to sign in anonymously
 function signInAnonymously() {
-    auth.signInAnonymously()
-        .then(() => {
-            console.log("Signed in anonymously");
-        })
-        .catch((error) => {
-            console.error("Error signing in anonymously:", error);
-        });
+    if (auth) {
+        auth.signInAnonymously()
+            .then(() => {
+                console.log("Signed in anonymously");
+            })
+            .catch((error) => {
+                console.error("Error signing in anonymously:", error);
+            });
+    } else {
+        console.error("Firebase Auth is not available");
+    }
 }
 
 // Call this function when the page loads
-signInAnonymously();
+document.addEventListener('DOMContentLoaded', (event) => {
+    signInAnonymously();
+});
 
 // Drag and drop functionality
 let dropArea = document.getElementById('drop-area');
@@ -73,14 +96,18 @@ function previewFile(file) {
 }
 
 function uploadFile(file) {
-    const storageRef = storage.ref('menu_photos/' + file.name);
-    
-    storageRef.put(file).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-        // You can add more code here to handle successful uploads
-    }).catch((error) => {
-        console.error('Upload failed:', error);
-    });
+    if (storage) {
+        const storageRef = storage.ref('menu_photos/' + file.name);
+        
+        storageRef.put(file).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+            // You can add more code here to handle successful uploads
+        }).catch((error) => {
+            console.error('Upload failed:', error);
+        });
+    } else {
+        console.error("Firebase Storage is not available");
+    }
 }
 
 // Add a new function to handle the upload to Vision API
