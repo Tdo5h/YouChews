@@ -1,13 +1,13 @@
 // Your Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAOtngL7Tc9qcRPPhXpsS0uaC7O8IFv7DM",
-    authDomain: "youchews-e12e5.firebaseapp.com",
-    databaseURL: "https://youchews-e12e5-default-rtdb.firebaseio.com",
-    projectId: "youchews-e12e5",
-    storageBucket: "youchews-e12e5.appspot.com",
-    messagingSenderId: "629252636983",
-    appId: "YOUR_APP_ID"
-};
+    apiKey: "AIzaSyBOPWwpBAtI3lhAy8KbHRPhWefEPZyXrto",
+    authDomain: "youchews.firebaseapp.com",
+    databaseURL: "https://youchews-default-rtdb.firebaseio.com",
+    projectId: "youchews",
+    storageBucket: "youchews.appspot.com",
+    messagingSenderId: "843273309086",
+    appId: "1:843273309086:web:1147f44dfb8f4d96a9248f"
+  };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
