@@ -11,17 +11,26 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase Authentication
+const auth = firebase.auth();
+
+// Initialize Firebase Storage
 const storage = firebase.storage();
 
-// Ensure Firebase Authentication is available
-if (firebase.auth) {
-    // Authenticate the user (example using anonymous authentication)
-    firebase.auth().signInAnonymously().catch(function(error) {
-        console.error('Authentication failed:', error);
-    });
-} else {
-    console.error('Firebase Authentication is not available.');
+// Function to sign in anonymously
+function signInAnonymously() {
+    auth.signInAnonymously()
+        .then(() => {
+            console.log("Signed in anonymously");
+        })
+        .catch((error) => {
+            console.error("Error signing in anonymously:", error);
+        });
 }
+
+// Call this function when the page loads
+signInAnonymously();
 
 // Drag and drop functionality
 let dropArea = document.getElementById('drop-area');
@@ -64,20 +73,14 @@ function previewFile(file) {
 }
 
 function uploadFile(file) {
-    let storageRef = storage.ref('menu_photos/' + file.name);
-    let uploadTask = storageRef.put(file);
-
-    uploadTask.on('state_changed',
-        function progress(snapshot) {
-            // You can add a progress bar here if you like
-        },
-        function error(err) {
-            console.error('Upload failed:', err);
-        },
-        function complete() {
-            console.log('Upload successful:', file.name);
-        }
-    );
+    const storageRef = storage.ref('menu_photos/' + file.name);
+    
+    storageRef.put(file).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        // You can add more code here to handle successful uploads
+    }).catch((error) => {
+        console.error('Upload failed:', error);
+    });
 }
 
 // Add a new function to handle the upload to Vision API
