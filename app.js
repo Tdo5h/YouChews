@@ -119,20 +119,47 @@ async function uploadToVisionAPI() {
             const blob = await response.blob();
             const visionAPIResponse = await sendToVisionAPI(blob);
             console.log('Vision API response:', visionAPIResponse);
+            
+            // Process the response (e.g., extract text)
+            const extractedText = visionAPIResponse.responses[0].textAnnotations[0].description;
+            console.log('Extracted text:', extractedText);
+            
+            // You can add more code here to handle the extracted text
         } catch (err) {
             console.error('Error uploading to Vision API:', err);
         }
     }
 }
 
-// Add a placeholder function to send the image to the Vision API
+// Update the sendToVisionAPI function
 async function sendToVisionAPI(imageBlob) {
-    const formData = new FormData();
-    formData.append('image', imageBlob);
+    const apiKey = 'AIzaSyBOPWwpBAtI3lhAy8KbHRPhWefEPZyXrto'; // Replace with your actual API key
+    const apiEndpoint = 'https://vision.googleapis.com/v1/images:annotate?key=' + apiKey;
 
-    const response = await fetch('https://your-vision-api-url', {
+    // Convert blob to base64
+    const base64Image = await blobToBase64(imageBlob);
+
+    const requestBody = JSON.stringify({
+        requests: [
+            {
+                image: {
+                    content: base64Image
+                },
+                features: [
+                    {
+                        type: 'TEXT_DETECTION'
+                    }
+                ]
+            }
+        ]
+    });
+
+    const response = await fetch(apiEndpoint, {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: requestBody
     });
 
     if (!response.ok) {
@@ -141,4 +168,14 @@ async function sendToVisionAPI(imageBlob) {
 
     const result = await response.json();
     return result;
+}
+
+// Helper function to convert Blob to base64
+function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
 }
