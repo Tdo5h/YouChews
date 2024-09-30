@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Trash2, ShoppingCart } from 'lucide-react';
+import Image from 'next/image';
 
 interface MenuItem {
   id: number;
@@ -29,6 +30,7 @@ const NikoNikoRollAndSushi = () => {
   const [showButton, setShowButton] = useState(true);
   const selectedItemsRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
+  const [imgError, setImgError] = useState(false);
 
   const handleItemClick = (item: MenuItem) => {
     setTotal((prevTotal) => prevTotal + item.price);
@@ -61,7 +63,13 @@ const NikoNikoRollAndSushi = () => {
     <div className="min-h-screen bg-gray-100 font-sans pb-20">
       <div className="fixed top-0 left-0 right-0 bg-black text-white p-4 flex justify-between items-center z-10">
         <div className="flex items-center space-x-4">
-          <img src="/placeholder.svg?height=40&width=120" alt="You Chews Logo" className="h-10" />
+          <Image 
+            src="/images/logo.png"
+            alt="You Chews Logo" 
+            width={120}
+            height={40}
+            className="h-10 w-auto"
+          />
         </div>
         <div className="text-2xl font-bold">Total: ${total.toFixed(2)}</div>
         <button

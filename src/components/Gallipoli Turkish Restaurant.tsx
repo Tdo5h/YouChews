@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import Link from 'next/link'; // Importing Link from Next.js
 
 interface MenuItem {
   id: string;
@@ -69,9 +68,9 @@ const GallipoliTurkishRestaurant = () => {
     ])
   }
 
-  const removeFromCart = (itemId: string) => {
-    setCart(prevCart => prevCart.filter(item => item.id !== itemId))
-  }
+  // const removeFromCart = (item: MenuItem) => {
+  //   // ... (implementation)
+  // }
 
   const totalPrice = cart.reduce((sum, item) => sum + item.price[item.size] * item.quantity, 0)
 
