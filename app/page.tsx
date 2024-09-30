@@ -157,8 +157,8 @@ export default function Home() {
             Go to Gallipoli Turkish Restaurant
           </Link>
           <Link href="/niko-niko-roll-and-sushi" className={currentClasses.link}>
-            Go to Niko Niko Roll & Sushi
-          </Link>
+  Go to Niko Niko Roll & Sushi
+</Link>
         </motion.div>
       </AnimatePresence>
     </main>
