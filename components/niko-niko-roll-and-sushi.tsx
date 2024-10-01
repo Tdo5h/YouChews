@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Trash2, ShoppingCart } from 'lucide-react';
+import { Trash2, ShoppingCart, RotateCcw, Copy } from 'lucide-react';
 import Link from 'next/link';
 
 interface MenuItem {
@@ -27,9 +27,11 @@ const menuItems: MenuItem[] = [
 export function NikoNikoRollAndSushi() {
   const [total, setTotal] = useState(0);
   const [selectedItems, setSelectedItems] = useState<MenuItem[]>([]);
+  const [previousOrder, setPreviousOrder] = useState<MenuItem[]>([]);
   const [showButton, setShowButton] = useState(true);
   const selectedItemsRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   const handleItemClick = (item: MenuItem) => {
     setTotal((prevTotal) => prevTotal + item.price);
@@ -43,6 +45,30 @@ export function NikoNikoRollAndSushi() {
 
   const scrollToSelectedItems = () => {
     selectedItemsRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleReorder = () => {
+    if (previousOrder.length > 0) {
+      setSelectedItems(previousOrder);
+      setTotal(previousOrder.reduce((sum, item) => sum + item.price, 0));
+    }
+  };
+
+  const handlePlaceOrder = () => {
+    setPreviousOrder(selectedItems);
+    setSelectedItems([]);
+    setTotal(0);
+    alert('Order placed successfully!');
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
   };
 
   useEffect(() => {
@@ -59,72 +85,99 @@ export function NikoNikoRollAndSushi() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans pb-20">
-      <div className="fixed top-0 left-0 right-0 bg-black text-white p-4 flex justify-between items-center z-10">
-        <div className="flex items-center space-x-4">
-          <Link href="/">
-            <img src="/placeholder.svg?height=40&width=120" alt="You Chews Logo" className="h-10 cursor-pointer" />
-          </Link>
-        </div>
-        <div className="text-2xl font-bold">Total: ${total.toFixed(2)}</div>
+    <div className="min-h-screen bg-gray-900 font-sans pb-16">
+      <div className="fixed top-0 left-0 right-0 bg-black text-white p-3 flex justify-between items-center z-10">
+        <Link href="/" className="flex items-center space-x-3">
+          <img 
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/youchews%20icon-cu9J4NCQm5DqTYGZmkxtDoXVONI58M.png" 
+            alt="YouChews Logo" 
+            className="h-7"
+          />
+        </Link>
+        <div className="text-lg font-bold">Total: ${total.toFixed(2)}</div>
         <button
-          onClick={() => {
-            setTotal(0);
-            setSelectedItems([]);
-          }}
-          className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleReorder}
+          className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-1.5 px-3 rounded flex items-center text-sm"
+          disabled={previousOrder.length === 0}
         >
-          Reset
+          <RotateCcw className="mr-1.5" size={15} />
+          Reorder
         </button>
       </div>
-      <div className="container mx-auto pt-20 p-4">
-        <h1 className="text-4xl font-bold mb-6 text-red-600">NIKO NIKO ROLL & SUSHI</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="container mx-auto pt-16 p-3">
+        <div className="bg-red-600 text-white p-6 rounded-lg shadow-lg mb-8">
+          <h1 className="text-4xl font-bold text-center">Niko Niko Roll & Sushi</h1>
+          <div className="flex justify-center items-center mt-2">
+            <p 
+              className="text-xl text-center cursor-pointer hover:underline"
+              onClick={() => copyToClipboard("43 Kakahoroa Drive WHAKATANE 3120")}
+            >
+              43 Kakahoroa Drive WHAKATANE 3120
+            </p>
+            <Copy 
+              size={18} 
+              className="ml-2 cursor-pointer" 
+              onClick={() => copyToClipboard("43 Kakahoroa Drive WHAKATANE 3120")}
+            />
+            {copySuccess && (
+              <span className="ml-2 text-sm text-green-300">Copied!</span>
+            )}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {menuItems.map((item) => (
             <div
               key={item.id}
-              className="bg-white p-4 rounded shadow cursor-pointer hover:bg-gray-50 transition-colors"
+              className="bg-gray-800 p-3 rounded shadow cursor-pointer hover:bg-gray-700 transition-colors border border-yellow-400"
               onClick={() => handleItemClick(item)}
             >
-              <h2 className="text-xl font-bold">{item.name}</h2>
-              <p className="text-gray-800 font-bold">${item.price.toFixed(2)}</p>
-              <p className="text-sm text-gray-600 mt-2">{item.description}</p>
+              <h3 className="text-base font-bold text-yellow-300">{item.name}</h3>
+              <p className="text-green-400 font-bold text-sm">${item.price.toFixed(2)}</p>
+              <p className="text-xs text-gray-300 mt-1">{item.description}</p>
             </div>
           ))}
         </div>
-        <div ref={selectedItemsRef} className="mt-8 bg-white p-4 rounded shadow">
-          <h2 className="text-2xl font-bold mb-4 text-red-600">SELECTED ITEMS:</h2>
-          <ul className="space-y-2">
+        <div ref={selectedItemsRef} className="mt-6 bg-gray-800 p-3 rounded shadow border-2 border-red-500">
+          <h2 className="text-xl font-bold mb-3 text-red-400">Selected Items:</h2>
+          <ul className="space-y-1.5">
             {selectedItems.map((item, index) => (
-              <li key={index} className="flex items-center justify-between">
+              <li key={index} className="flex items-center justify-between border-b border-yellow-600 pb-2">
                 <div>
-                  <span className="font-bold">{item.name}</span>
-                  <span className="text-gray-600 ml-2">${item.price.toFixed(2)}</span>
-                  <p className="text-sm text-gray-600">{item.description}</p>
+                  <span className="font-bold text-sm text-yellow-300">{item.name}</span>
+                  <span className="text-green-400 ml-1.5 text-xs">${item.price.toFixed(2)}</span>
+                  <p className="text-xs text-gray-300">{item.description}</p>
                 </div>
                 <button
                   onClick={() => handleRemoveItem(index)}
-                  className="text-red-600 hover:text-red-800"
+                  className="text-red-400 hover:text-red-600"
                   aria-label={`Remove ${item.name}`}
                 >
-                  <Trash2 size={20} />
+                  <Trash2 size={15} />
                 </button>
               </li>
             ))}
           </ul>
+          {selectedItems.length > 0 && (
+            <button
+              onClick={handlePlaceOrder}
+              className="mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded w-full text-sm"
+            >
+              Place Order
+            </button>
+          )}
         </div>
       </div>
       <div 
         ref={buttonRef}
-        className={`fixed bottom-0 left-0 right-0 bg-black text-white p-4 flex justify-center items-center z-10 transition-opacity duration-300 ${
+        className={`fixed bottom-0 left-0 right-0 bg-black text-white p-3 flex justify-center items-center z-10 transition-opacity duration-300 ${
           showButton ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
         <button
           onClick={scrollToSelectedItems}
-          className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center"
+          className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-1.5 px-3 rounded flex items-center text-sm"
         >
-          <ShoppingCart className="mr-2" size={20} />
+          <ShoppingCart className="mr-1.5" size={15} />
           Selected Items ({selectedItems.length})
         </button>
       </div>

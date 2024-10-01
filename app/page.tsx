@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight, ChevronLeft, Sun, Moon } from 'lucide-react'
+import { ChevronRight, ChevronLeft } from 'lucide-react'
 
 const styles = [
   // Style 1: Neon Cyberpunk
@@ -60,7 +60,6 @@ const styles = [
 
 export default function Home() {
   const [currentStyle, setCurrentStyle] = useState(0)
-  const [isDarkMode, setIsDarkMode] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
@@ -68,27 +67,14 @@ export default function Home() {
     if (savedStyle !== null) {
       setCurrentStyle(parseInt(savedStyle, 10))
     }
-
-    const savedDarkMode = localStorage.getItem('darkMode')
-    if (savedDarkMode !== null) {
-      setIsDarkMode(savedDarkMode === 'true')
-    }
-
     setIsLoaded(true)
   }, [])
 
   useEffect(() => {
     if (isLoaded) {
       localStorage.setItem('currentStyle', currentStyle.toString())
-      localStorage.setItem('darkMode', isDarkMode.toString())
-      
-      if (isDarkMode) {
-        document.documentElement.classList.add('dark-mode')
-      } else {
-        document.documentElement.classList.remove('dark-mode')
-      }
     }
-  }, [currentStyle, isDarkMode, isLoaded])
+  }, [currentStyle, isLoaded])
 
   const nextStyle = () => {
     setCurrentStyle((prevStyle) => (prevStyle + 1) % styles.length)
@@ -98,10 +84,6 @@ export default function Home() {
     setCurrentStyle((prevStyle) => (prevStyle - 1 + styles.length) % styles.length)
   }
 
-  const toggleDarkMode = () => {
-    setIsDarkMode((prev) => !prev)
-  }
-
   const currentClasses = styles[currentStyle]
 
   if (!isLoaded) {
@@ -109,7 +91,7 @@ export default function Home() {
   }
 
   return (
-    <main className={`${currentClasses.main} transition-all duration-500 ease-in-out ${isDarkMode ? 'dark-mode' : ''}`}>
+    <main className={`${currentClasses.main} transition-all duration-500 ease-in-out`}>
       <div className="absolute top-4 left-4 flex items-center space-x-4">
         <button
           onClick={prevStyle}
@@ -125,15 +107,6 @@ export default function Home() {
         >
           <ChevronRight size={24} />
         </button>
-        <motion.button
-          onClick={toggleDarkMode}
-          className={`p-2 rounded-full ${currentClasses.buttonBg} ${currentClasses.buttonText} hover:scale-110 transition-transform duration-200`}
-          aria-label="Toggle dark mode"
-          animate={{ rotate: isDarkMode ? 180 : 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
-        </motion.button>
       </div>
       <p className="absolute top-16 left-4 text-sm">{currentClasses.name}</p>
       <motion.h1
@@ -157,8 +130,11 @@ export default function Home() {
             Go to Gallipoli Turkish Restaurant
           </Link>
           <Link href="/niko-niko-roll-and-sushi" className={currentClasses.link}>
-  Go to Niko Niko Roll & Sushi
-</Link>
+            Go to Niko Niko Roll & Sushi
+          </Link>
+          <Link href="/new-hong-kong" className={currentClasses.link}>
+            Go to New Hong Kong Chinese Restaurant
+          </Link>
         </motion.div>
       </AnimatePresence>
     </main>
