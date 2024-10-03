@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouChews - Menu Creator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #text-items-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .category-box {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 10px;
+            cursor: move;
+            user-select: none;
+            width: 300px;
+        }
+
+        .menu-item {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: move;
+        }
+
+        .menu-item h3 {
+            margin: 0 0 5px 0;
+        }
+
+        .menu-item .price {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .menu-item .description {
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouChews - Upload Your Menu Photos</h1>
+    <div id="drop-area">
+        <form class="my-form">
+            <p>Upload multiple menu photos by dragging and dropping them into the area below:</p>
+            <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+            <label class="button" for="fileElem">Select Files</label>
+            <!-- Add an upload button -->
+            <button type="button" id="uploadBtn" class="button" onclick="uploadToVisionAPI()">Upload to Vision API</button>
+        </form>
+        <div id="gallery"></div>
+    </div>
+
+    <button onclick="uploadToVisionAPI()">Process Images</button>
+
+    <div id="text-items-container"></div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+
+    <!-- Your custom script -->
+    <script src="app.js"></script>
+</body>
+</html>

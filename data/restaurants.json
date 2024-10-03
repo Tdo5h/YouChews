@@ -1,0 +1,17 @@
+[
+  {
+    "slug": "gallipoli-restaurant",
+    "name": "Gallipoli Turkish Restaurant",
+    "description": "Authentic Turkish cuisine in a warm, inviting atmosphere."
+  },
+  {
+    "slug": "niko-niko-roll-and-sushi",
+    "name": "Niko Niko Roll & Sushi",
+    "description": "Fresh, delicious sushi and Japanese specialties."
+  },
+  {
+    "slug": "new-hong-kong",
+    "name": "New Hong Kong Chinese Restaurant",
+    "description": "Traditional Chinese dishes with a modern twist."
+  }
+]

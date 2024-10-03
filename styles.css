@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 20px;
+    width: 80%;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.my-form {
+    margin-bottom: 20px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: #28a745;
+    color: #fff;
+    border-radius: 5px;
+}
+
+#gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#gallery img {
+    max-width: 150px;
+    margin: 10px;
+}
