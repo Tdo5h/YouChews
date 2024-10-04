@@ -4,14 +4,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import restaurants from '@/data/restaurants.json'
-import LoginButtonWrapper from '../components/LoginButtonWrapper'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ShoppingCart, Settings } from 'lucide-react'
 import { useCart } from '@/hooks/useCart'
 
 const iconicBlackStyle = {
-  main: "min-h-screen bg-black text-blue-500 flex flex-col items-center justify-center p-4 sm:p-8",
+  main: "min-h-screen bg-black text-blue-500 flex flex-col items-center p-4 sm:p-8",
   linkContainer: "flex flex-col items-center gap-4 w-full max-w-xs sm:max-w-sm",
   link: "px-4 py-2 sm:px-6 sm:py-3 bg-transparent border-2 border-blue-500 text-blue-500 rounded-lg hover:bg-blue-500 hover:text-black transition-all duration-300 ease-in-out transform hover:scale-105 w-full text-center text-sm sm:text-base",
   button: "px-3 py-1 sm:px-4 sm:py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300 ease-in-out flex items-center justify-center text-sm sm:text-base",
@@ -54,14 +53,11 @@ export default function Home() {
 
   return (
     <main className={iconicBlackStyle.main}>
-      <div className="absolute top-2 right-2 sm:top-4 sm:right-4">
-        <LoginButtonWrapper />
-      </div>
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-6 sm:mb-12"
+        className="mt-16 sm:mt-24 mb-6 sm:mb-12"
       >
         <div className="w-[200px] h-[100px] sm:w-[294px] sm:h-[147px] relative">
           <Image
