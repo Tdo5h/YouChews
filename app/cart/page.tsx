@@ -26,21 +26,7 @@ export default function CartPage() {
   const [showCheckout, setShowCheckout] = useState(false);
   const router = useRouter();
 
-  const groupedItems = cart.reduce((acc, item) => {
-    if (!acc[item.shop]) acc[item.shop] = [];
-    acc[item.shop].push(item);
-    return acc;
-  }, {} as GroupedCartItems);
-
-  const shopCount = Object.keys(groupedItems).length;
-
-  const calculateTotal = (items: CartItem[]) => {
-    return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  };
-
-  const calculateOverallTotal = () => {
-    return Object.values(groupedItems).reduce((total, items) => total + calculateTotal(items), 0);
-  };
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handleRemoveItem = (id: number, shop: string) => {
     removeFromCart(id, shop);
@@ -99,11 +85,17 @@ export default function CartPage() {
     </div>
   );
 
+  const groupedItems = cart.reduce((acc, item) => {
+    if (!acc[item.shop]) acc[item.shop] = [];
+    acc[item.shop].push(item);
+    return acc;
+  }, {} as GroupedCartItems);
+
   return (
     <div className="min-h-screen bg-black text-white py-4 sm:py-8">
       <div className="container mx-auto px-2 sm:px-4">
         <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-center">Your Cart</h1>
-        {shopCount === 0 ? (
+        {Object.keys(groupedItems).length === 0 ? (
           <p className="text-center text-gray-400">Your cart is empty</p>
         ) : (
           <>
@@ -145,11 +137,6 @@ export default function CartPage() {
                     </div>
                   </div>
                 ))}
-                <div className="mt-4 text-right">
-                  <span className="text-lg font-semibold text-red-600">
-                    Total: ${calculateTotal(items).toFixed(2)}
-                  </span>
-                </div>
               </div>
             ))}
             <div className="bg-gray-900 rounded-lg shadow-md p-6 mb-8">
@@ -161,17 +148,11 @@ export default function CartPage() {
                 className="w-full h-32 p-2 border rounded bg-gray-800 text-white border-gray-700"
               ></textarea>
             </div>
-            {shopCount > 1 && (
-              <div className="bg-gray-900 rounded-lg shadow-md p-6 mb-8">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold">Overall Total:</h2>
-                  <span className="text-2xl font-bold text-red-600">
-                    ${calculateOverallTotal().toFixed(2)}
-                  </span>
-                </div>
-              </div>
-            )}
             <div className="bg-gray-900 rounded-lg shadow-md p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">Total:</h2>
+                <span className="text-2xl font-bold">${total.toFixed(2)}</span>
+              </div>
               <button onClick={handleCheckout} className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
                 Proceed to Checkout
               </button>
