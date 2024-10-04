@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import localFont from "next/font/local";
 import "./globals.css";
-import AuthProvider from './AuthProvider'
+import AuthProvider from './AuthProvider'  // Make sure this path is correct
 import Link from 'next/link';
 import { Home } from 'lucide-react';
 
