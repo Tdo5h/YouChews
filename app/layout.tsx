@@ -1,7 +1,9 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import AuthProvider from './AuthProvider'
 import LayoutContent from './LayoutContent';
+import dynamic from 'next/dynamic';
+
+const AuthProvider = dynamic(() => import('./AuthProvider'), { ssr: false });
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
