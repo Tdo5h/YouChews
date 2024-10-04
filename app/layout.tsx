@@ -29,23 +29,23 @@ export default function RootLayout({
     const baseClasses = "p-2 border-2 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105";
     
     if (pathname?.includes('/restaurant/new-hong-kong')) {
-      return `${baseClasses} bg-transparent border-red-700 text-red-700 hover:bg-red-700 hover:text-white`;
+      return `${baseClasses} border-red-700 text-red-700 hover:bg-red-700 hover:text-white`;
     } else if (pathname?.includes('/restaurant/gallipoli')) {
-      return `${baseClasses} bg-transparent border-green-500 text-green-500 hover:bg-green-500 hover:text-white`;
+      return `${baseClasses} border-green-500 text-green-500 hover:bg-green-500 hover:text-white`;
     } else if (pathname?.includes('/restaurant/niko-niko-roll-and-sushi')) {
-      return `${baseClasses} bg-transparent border-red-600 text-red-600 hover:bg-red-600 hover:text-white`;
+      return `${baseClasses} border-red-600 text-red-600 hover:bg-red-600 hover:text-white`;
     } else if (pathname?.includes('/restaurant/hot-chilis')) {
-      return `${baseClasses} bg-transparent border-[#F4B860] text-[#F4B860] hover:bg-[#F4B860] hover:text-[#2B1D16]`;
+      return `${baseClasses} bg-[#2B1D16] border-[#F4B860] text-[#F4B860] hover:bg-[#F4B860] hover:text-[#2B1D16]`;
     } else {
       // Default style (for home page and any other pages)
-      return `${baseClasses} bg-transparent border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white`;
+      return `${baseClasses} border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white`;
     }
   };
 
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans min-h-screen flex flex-col`}
       >
         <AuthProvider>
           <div className="fixed top-4 left-4 z-50">
@@ -55,7 +55,7 @@ export default function RootLayout({
               </button>
             </Link>
           </div>
-          <main className="pb-16">
+          <main className="flex-grow">
             {children}
           </main>
         </AuthProvider>
