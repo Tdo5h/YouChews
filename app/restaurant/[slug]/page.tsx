@@ -1,41 +1,19 @@
-import { notFound } from 'next/navigation'
-import restaurants from '@/data/restaurants.json'
-import { GallipoliMenuComponent } from '@/components/gallipoli-menu'
-import { NewHongKongComponent } from '@/components/new-hong-kong'
-import { NikoNikoRollAndSushi } from '@/components/niko-niko-roll-and-sushi'
+import { NewHongKongComponent } from '@/components/new-hong-kong';
+import { GallipoliMenuComponent } from '@/components/gallipoli-menu';
+import { NikoNikoRollAndSushi } from '@/components/niko-niko-roll-and-sushi';
+import { HotChilisComponent } from '@/components/hot-chilis';
 
 export default function RestaurantPage({ params }: { params: { slug: string } }) {
-  const restaurant = restaurants.find(r => r.slug === params.slug)
-
-  if (!restaurant) {
-    notFound()
+  switch (params.slug) {
+    case 'new-hong-kong':
+      return <NewHongKongComponent />;
+    case 'gallipoli':
+      return <GallipoliMenuComponent />;
+    case 'niko-niko-roll-and-sushi':
+      return <NikoNikoRollAndSushi />;
+    case 'hot-chilis':
+      return <HotChilisComponent />;
+    default:
+      return <div>Restaurant not found</div>;
   }
-
-  const getRestaurantComponent = (slug: string) => {
-    switch (slug) {
-      case 'gallipoli-restaurant':
-        return <GallipoliMenuComponent />
-      case 'new-hong-kong':
-        return <NewHongKongComponent />
-      case 'niko-niko-roll-and-sushi':
-        return <NikoNikoRollAndSushi />
-      default:
-        return notFound()
-    }
-  }
-
-  // Ensure the component is rendered only after the restaurant is found
-  const restaurantComponent = restaurant ? getRestaurantComponent(restaurant.slug) : null;
-
-  return (
-    <div>
-      {restaurantComponent || <p>Loading...</p>} {/* Fallback loading state */}
-    </div>
-  )
-}
-
-export function generateStaticParams() {
-  return restaurants.map((restaurant) => ({
-    slug: restaurant.slug,
-  }))
 }
