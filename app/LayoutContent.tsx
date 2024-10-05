@@ -1,37 +1,39 @@
 'use client'
 
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Home } from 'lucide-react';
-import LoginButtonWrapper from '@/components/LoginButtonWrapper';
+import { Home, ShoppingCart, LogIn } from 'lucide-react';
+import { useEffect } from 'react';
 
-export default function LayoutContent({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-
-  const getIconButtonClasses = () => {
-    const baseClasses = "p-2 border-2 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md";
-    
-    // Always use blue for the home button
-    return `${baseClasses} border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white`;
-  };
-
-  const isHomePage = pathname === '/';
+export default function LayoutContent({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  useEffect(() => {
+    // Remove the build watcher elements
+    const elements = document.querySelectorAll('#__next-build-watcher');
+    elements.forEach(el => el.remove());
+  }, []);
 
   return (
     <>
-      <div className="fixed top-4 left-4 z-50">
-        <Link href="/">
-          <button className={getIconButtonClasses()} aria-label="Home">
-            <Home size={24} />
-          </button>
+      <nav className="flex justify-between items-center p-4 bg-black text-white">
+        <Link href="/" className="flex items-center space-x-2">
+          <Home className="w-6 h-6 text-blue-500" />
+          <span className="font-bold text-lg">Home</span>
         </Link>
-      </div>
-      {isHomePage && (
-        <div className="fixed top-4 right-4 z-50">
-          <LoginButtonWrapper />
+        <div className="flex items-center space-x-4">
+          <Link href="/cart" className="flex items-center space-x-2">
+            <ShoppingCart className="w-6 h-6 text-blue-500" />
+            <span>Cart</span>
+          </Link>
+          <Link href="/login" className="flex items-center space-x-2">
+            <LogIn className="w-6 h-6 text-blue-500" />
+            <span>Login</span>
+          </Link>
         </div>
-      )}
-      <main className="flex-grow">
+      </nav>
+      <main className="flex-grow container mx-auto p-4">
         {children}
       </main>
     </>

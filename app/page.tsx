@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import restaurants from '@/data/restaurants.json'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ShoppingCart, Settings } from 'lucide-react'
+import { ShoppingCart } from 'lucide-react'
 import { useCart } from '@/hooks/useCart'
 
 const iconicBlackStyle = {
@@ -14,19 +14,27 @@ const iconicBlackStyle = {
   linkContainer: "flex flex-col items-center gap-4 w-full max-w-xs sm:max-w-sm",
   link: "px-4 py-2 sm:px-6 sm:py-3 bg-transparent border-2 border-blue-500 text-blue-500 rounded-lg hover:bg-blue-500 hover:text-black transition-all duration-300 ease-in-out transform hover:scale-105 w-full text-center text-sm sm:text-base",
   button: "px-3 py-1 sm:px-4 sm:py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300 ease-in-out flex items-center justify-center text-sm sm:text-base",
-  iconButton: "p-2 bg-transparent border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105",
 }
 
 export default function Home() {
   const { cart, lastShop } = useCart();
   const [hasSelectedItems, setHasSelectedItems] = useState(false)
   const [cartItemCount, setCartItemCount] = useState(0)
+  const [homeClickCount, setHomeClickCount] = useState(0)
   const router = useRouter()
 
   useEffect(() => {
     setHasSelectedItems(cart.length > 0)
     setCartItemCount(cart.reduce((sum, item) => sum + item.quantity, 0))
   }, [cart])
+
+  const handleHomeClick = () => {
+    setHomeClickCount(prev => prev + 1)
+    if (homeClickCount === 2) {
+      router.push('/shop-login')
+      setHomeClickCount(0)
+    }
+  }
 
   const handleContinueShopping = () => {
     if (lastShop) {
@@ -58,6 +66,7 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="mt-16 sm:mt-24 mb-6 sm:mb-12"
+        onClick={handleHomeClick}
       >
         <div className="w-[200px] h-[100px] sm:w-[294px] sm:h-[147px] relative">
           <Image
@@ -92,18 +101,6 @@ export default function Home() {
           </Link>
         ))}
       </motion.div>
-      <div className="fixed bottom-2 left-2 sm:bottom-4 sm:left-4 z-50">
-        <button className={iconicBlackStyle.iconButton} aria-label="Settings">
-          <Settings size={20} />
-        </button>
-      </div>
-      <div className="fixed bottom-2 right-2 sm:bottom-4 sm:right-4 z-50">
-        <Link href="/cart">
-          <button className={iconicBlackStyle.iconButton} aria-label="View Cart">
-            <ShoppingCart size={20} />
-          </button>
-        </Link>
-      </div>
     </main>
   )
 }
