@@ -3,8 +3,6 @@ import "./globals.css";
 import LayoutContent from './LayoutContent';
 import dynamic from 'next/dynamic';
 
-const AuthProvider = dynamic(() => import('./AuthProvider'), { ssr: false });
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -26,9 +24,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans min-h-screen flex flex-col`}
       >
-        <AuthProvider>
-          <LayoutContent>{children}</LayoutContent>
-        </AuthProvider>
+        <LayoutContent>{children}</LayoutContent>
       </body>
     </html>
   );
